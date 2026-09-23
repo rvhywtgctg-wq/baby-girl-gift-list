@@ -1,119 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Baby Girl Gift List 💗</title>
+<title>💗 Baby Girl Shopping List 💗</title>
 
 <style>
 body{
-font-family:Arial,sans-serif;
-background:#fff5f9;
-max-width:800px;
-margin:auto;
-padding:20px;
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+background:#fff7fa;
+color:#444;
 }
 
-h1{
+header{
 text-align:center;
-color:#d65d8a;
+padding:30px 20px;
+background:linear-gradient(135deg,#ffdfe9,#fff7fa);
 }
 
-.item{
+header h1{
+margin:0;
+color:#be6987;
+font-size:32px;
+}
+
+header p{
+color:#666;
+margin-top:10px;
+}
+
+.section{
+margin:15px;
 background:white;
-margin:10px 0;
-padding:15px;
-border-radius:12px;
-box-shadow:0 2px 6px rgba(0,0,0,.1);
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 3px 12px rgba(0,0,0,0.08);
+}
+
+.section summary{
+list-style:none;
+padding:18px;
+font-size:20px;
+font-weight:bold;
+background:#f7dce4;
+color:#9b4b69;
 cursor:pointer;
 }
 
-.claimed{
-background:#ffddeb;
+.section summary::-webkit-details-marker{
+display:none;
+}
+
+.item{
+padding:15px;
+border-bottom:1px solid #f2f2f2;
+}
+
+.item:last-child{
+border-bottom:none;
 }
 
 .name{
-margin-top:10px;
+font-weight:600;
+font-size:16px;
+}
+
+.qty{
 font-size:14px;
-color:#666;
+color:#777;
+margin-top:4px;
+}
+
+.status{
+margin-top:6px;
+color:#be6987;
+font-size:14px;
+}
+
+footer{
+text-align:center;
+padding:30px;
+color:#777;
 }
 </style>
 </head>
-
 <body>
 
-<h1>💗 Baby Girl Gift List 💗</h1>
+<header>
+<h1>💗 Baby Girl Shopping List 💗</h1>
+<p>
+Choose something you'd like to help with and let us know what you're buying.
+</p>
+</header>
 
-<p>Tap an item to claim it.</p>
+<details class="section" open>
+<summary>👗 Clothing</summary>
 
-<div id="list"></div>
+<div class="item"><div class="name">Bodysuits</div><div class="qty">Need: 6–8</div><div class="status">Available</div></div>
+<div class="item"><div class="name">Sleepsuits / Babygrows</div><div class="qty">Need: 6–8</div><div class="status">Available</div></div>
+<div class="item"><div class="name">Cardigans / Jumpers</div><div class="qty">Need: 2–3</div><div class="status">Available</div></div>
+<div class="item"><div class="name">Socks</div><div class="qty">Need: 4–6 pairs</div><div class="status">Available</div></div>
+<div class="item"><div class="name">Soft Hats</div><div class="qty">Need: 2–3</div><div class="status">Available</div></div>
+<div class="item"><div class="name">Warm Outdoor Layer</div><div class="qty">Need: 1–2</div></div>
+<div class="item"><div class="name">Going Home Outfit</div><div class="qty">Need: 1–2</div></div>
+<div class="item"><div class="name">Scratch Mitts</div><div class="qty">Need: 1–2 pairs</div></div>
 
-<script>
+</details>
 
-const items = [
-"Bodysuits",
-"Sleepsuits",
-"Cardigans",
-"Socks",
-"Soft hats",
-"Cot / bedside crib",
-"Mattress",
-"Fitted sheets",
-"Cellular blankets",
-"Sleeping bags",
-"Newborn nappies",
-"Baby wipes",
-"Changing mat",
-"Barrier cream",
-"Muslin cloths",
-"Baby bottles",
-"Steriliser",
-"Baby bath",
-"Hooded towels",
-"Digital thermometer",
-"Car seat",
-"Pram",
-"Changing bag",
-"Baby carrier",
-"Baby monitor",
-"Night light",
-"Play mat",
-"Bouncer",
-"Keepsake box",
-"White noise machine"
-];
+<details class="section">
+<summary>🛏 Sleeping</summary>
 
-const list=document.getElementById('list');
+<div class="item"><div class="name">Cot / Bedside Crib / Moses Basket</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Mattress</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Fitted Sheets</div><div class="qty">Need: 3–4</div></div>
+<div class="item"><div class="name">Cellular Blankets</div><div class="qty">Need: 2–3</div></div>
+<div class="item"><div class="name">Sleeping Bags</div><div class="qty">Need: 2–3</div></div>
+<div class="item"><div class="name">Mattress Protectors</div><div class="qty">Need: 2</div></div>
+<div class="item"><div class="name">Room Thermometer</div><div class="qty">Need: 1</div></div>
 
-items.forEach(item=>{
+</details>
 
-const box=document.createElement('div');
+<details class="section">
+<summary>🧷 Nappies & Changing</summary>
 
-box.className='item';
+<div class="item"><div class="name">Newborn Nappies</div><div class="qty">Need: 1–2 packs</div></div>
+<div class="item"><div class="name">Baby Wipes</div><div class="qty">Need: 1–2 packs</div></div>
+<div class="item"><div class="name">Changing Mat</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Barrier Cream</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Nappy Bags</div><div class="qty">Need: 1 pack</div></div>
+<div class="item"><div class="name">Muslin Cloths</div><div class="qty">Need: 10–15</div></div>
 
-box.innerHTML=`
-<strong>${item}</strong>
-<div class="name">Available</div>
-`;
+</details>
 
-box.onclick=()=>{
+<details class="section">
+<summary>🍼 Feeding</summary>
 
-const name=prompt("What's your name?");
+<div class="item"><div class="name">Burp Cloths</div><div class="qty">Need: 6–10</div></div>
+<div class="item"><div class="name">Bibs</div><div class="qty">Need: 5–8</div></div>
+<div class="item"><div class="name">Breast Pads</div><div class="qty">Need: 1 pack</div></div>
+<div class="item"><div class="name">Nursing Bras</div><div class="qty">Need: 2–3</div></div>
+<div class="item"><div class="name">Baby Bottles</div><div class="qty">Need: 4–6</div></div>
+<div class="item"><div class="name">Sterilising Equipment</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Formula</div><div class="qty">If Needed</div></div>
+<div class="item"><div class="name">Breast Pump</div><div class="qty">Optional</div></div>
 
-if(!name)return;
+</details>
 
-box.classList.add('claimed');
+<details class="section">
+<summary>🛁 Bath & Baby Care</summary>
 
-box.querySelector('.name').innerText=
-'Claimed by ' + name;
+<div class="item"><div class="name">Baby Bath</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Hooded Towels</div><div class="qty">Need: 2–3</div></div>
+<div class="item"><div class="name">Washcloths</div><div class="qty">Need: 3–5</div></div>
+<div class="item"><div class="name">Baby Wash</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Nail Clippers</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Digital Thermometer</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Hairbrush</div><div class="qty">Need: 1</div></div>
 
-};
+</details>
 
-list.appendChild(box);
+<details class="section">
+<summary>🚗 Getting Around</summary>
 
-});
+<div class="item"><div class="name">Car Seat</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Pram / Pushchair</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Changing Bag</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Pram Rain Cover</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Baby Carrier</div><div class="qty">Optional</div></div>
 
-</script>
+</details>
+
+<details class="section">
+<summary>🏡 Home</summary>
+
+<div class="item"><div class="name">Changing Station</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Laundry Basket</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Baby Monitor</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Night Light</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Blackout Curtains</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Storage Baskets</div><div class="qty">Need: 2–3</div></div>
+
+</details>
+
+<details class="section">
+<summary>💗 Nice To Have</summary>
+
+<div class="item"><div class="name">Baby Gym / Play Mat</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Bouncer</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Memory Book</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Keepsake Box</div><div class="qty">Need: 1</div></div>
+<div class="item"><div class="name">Milestone Cards</div><div class="qty">Need: 1 Set</div></div>
+<div class="item"><div class="name">White Noise Machine</div><div class="qty">Optional</div></div>
+<div class="item"><div class="name">Bottle Warmer</div><div class="qty">Optional</div></div>
+
+</details>
+
+<footer>
+Thank you for helping us get ready for our little girl 💕
+</footer>
 
 </body>
 </html>
