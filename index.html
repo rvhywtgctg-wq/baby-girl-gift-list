@@ -191,7 +191,8 @@ for(const section in categories){
 for(const item of categories[section]){
 
 await setDoc(
-doc(db,"items",item[0]),
+doc(db,"items",item[0].replaceAll("/","-")),
+
 {
 name:"",
 claimed:false,
@@ -231,7 +232,8 @@ html+=`
 
 categories[section].forEach(item=>{
 
-const record=items.find(x=>x.id===item[0]);
+const record=items.find(x=>x.id===item[0].replaceAll("/","-"));
+
 
 if(!record)return;
 
