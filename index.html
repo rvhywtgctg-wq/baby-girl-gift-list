@@ -3,58 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>💗 Baby Girl Shopping List 💗</title>
 
 <style>
+
 body{
-margin:0;
-font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+font-family:-apple-system,sans-serif;
 background:#fff7fa;
-color:#444;
+margin:0;
+padding:15px;
 }
 
 header{
 text-align:center;
-padding:30px 20px;
-background:linear-gradient(135deg,#ffdfe9,#fff7fa);
+padding:20px;
 }
 
-header h1{
-margin:0;
+h1{
 color:#be6987;
-font-size:32px;
-}
-
-header p{
-color:#666;
-margin-top:10px;
 }
 
 .section{
-margin:15px;
 background:white;
 border-radius:20px;
+margin-bottom:15px;
 overflow:hidden;
-box-shadow:0 3px 12px rgba(0,0,0,0.08);
+box-shadow:0 4px 10px rgba(0,0,0,.08);
 }
 
-.section summary{
-list-style:none;
+summary{
 padding:18px;
-font-size:20px;
 font-weight:bold;
-background:#f7dce4;
-color:#9b4b69;
+background:#fce4ec;
+font-size:20px;
 cursor:pointer;
-}
-
-.section summary::-webkit-details-marker{
-display:none;
 }
 
 .item{
 padding:15px;
-border-bottom:1px solid #f2f2f2;
+border-bottom:1px solid #eee;
 }
 
 .item:last-child{
@@ -63,142 +51,243 @@ border-bottom:none;
 
 .name{
 font-weight:600;
-font-size:16px;
 }
 
 .qty{
-font-size:14px;
+font-size:13px;
 color:#777;
-margin-top:4px;
 }
 
-.status{
-margin-top:6px;
+.claim-btn{
+margin-top:10px;
+background:#be6987;
+color:white;
+border:none;
+padding:10px;
+border-radius:10px;
+width:100%;
+}
+
+.claimed{
+background:#ffe2ee;
+}
+
+.claimed-name{
+margin-top:8px;
 color:#be6987;
-font-size:14px;
+font-weight:bold;
 }
 
-footer{
+.progress{
+background:white;
+padding:15px;
+border-radius:20px;
+margin-bottom:20px;
 text-align:center;
-padding:30px;
-color:#777;
+font-weight:bold;
 }
+
 </style>
 </head>
+
 <body>
 
 <header>
 <h1>💗 Baby Girl Shopping List 💗</h1>
-<p>
-Choose something you'd like to help with and let us know what you're buying.
-</p>
+<p>Choose something you'd like to buy.</p>
 </header>
 
+<div class="progress">
+<span id="progress">Loading...</span>
+</div>
+
+<div id="content"></div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+doc,
+setDoc,
+getDocs,
+onSnapshot
+}
+from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey:"PASTE_API_KEY",
+authDomain:"PASTE_AUTH_DOMAIN",
+projectId:"PASTE_PROJECT_ID",
+storageBucket:"PASTE_STORAGE_BUCKET",
+messagingSenderId:"PASTE_MESSAGING_SENDER_ID",
+appId:"PASTE_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const categories = {
+
+"👗 Clothing":[
+["Bodysuits","6-8"],
+["Sleepsuits / Babygrows","6-8"],
+["Cardigans / Jumpers","2-3"],
+["Socks","4-6 pairs"],
+["Soft Hats","2-3"],
+["Warm Outdoor Layer","1-2"],
+["Going Home Outfit","1-2"],
+["Scratch Mitts","1-2 pairs"]
+],
+
+"🛏 Sleeping":[
+["Cot / Bedside Crib","1"],
+["Mattress","1"],
+["Fitted Sheets","3-4"],
+["Cellular Blankets","2-3"],
+["Sleeping Bags","2-3"],
+["Mattress Protectors","2"],
+["Room Thermometer","1"]
+],
+
+"🧷 Nappies & Changing":[
+["Newborn Nappies","1-2 packs"],
+["Baby Wipes","1-2 packs"],
+["Changing Mat","1"],
+["Barrier Cream","1"],
+["Nappy Bags","1 pack"],
+["Muslin Cloths","10-15"]
+],
+
+"🍼 Feeding":[
+["Baby Bottles","4-6"],
+["Steriliser","1"],
+["Bibs","5-8"],
+["Breast Pump","Optional"]
+],
+
+"🚗 Getting Around":[
+["Car Seat","1"],
+["Pram","1"],
+["Changing Bag","1"],
+["Pram Rain Cover","1"],
+["Baby Carrier","Optional"]
+],
+
+"🏡 Home":[
+["Baby Monitor","1"],
+["Night Light","1"],
+["Storage Baskets","2-3"],
+["Laundry Basket","1"]
+]
+};
+
+for(const section in categories){
+
+for(const item of categories[section]){
+
+await setDoc(
+doc(db,"items",item[0]),
+{
+name:"",
+claimed:false,
+qty:item[1],
+category:section
+},
+{merge:true}
+);
+
+}
+}
+
+onSnapshot(collection(db,"items"),snapshot=>{
+
+const items=[];
+
+snapshot.forEach(docu=>{
+items.push({
+id:docu.id,
+...docu.data()
+});
+});
+
+const claimed=items.filter(i=>i.claimed).length;
+
+document.getElementById("progress").innerText=
+`${claimed} of ${items.length} items claimed`;
+
+let html="";
+
+for(const section in categories){
+
+html+=`
 <details class="section" open>
-<summary>👗 Clothing</summary>
+<summary>${section}</summary>
+`;
 
-<div class="item"><div class="name">Bodysuits</div><div class="qty">Need: 6–8</div><div class="status">Available</div></div>
-<div class="item"><div class="name">Sleepsuits / Babygrows</div><div class="qty">Need: 6–8</div><div class="status">Available</div></div>
-<div class="item"><div class="name">Cardigans / Jumpers</div><div class="qty">Need: 2–3</div><div class="status">Available</div></div>
-<div class="item"><div class="name">Socks</div><div class="qty">Need: 4–6 pairs</div><div class="status">Available</div></div>
-<div class="item"><div class="name">Soft Hats</div><div class="qty">Need: 2–3</div><div class="status">Available</div></div>
-<div class="item"><div class="name">Warm Outdoor Layer</div><div class="qty">Need: 1–2</div></div>
-<div class="item"><div class="name">Going Home Outfit</div><div class="qty">Need: 1–2</div></div>
-<div class="item"><div class="name">Scratch Mitts</div><div class="qty">Need: 1–2 pairs</div></div>
+categories[section].forEach(item=>{
 
-</details>
+const record=items.find(x=>x.id===item[0]);
 
-<details class="section">
-<summary>🛏 Sleeping</summary>
+if(!record)return;
 
-<div class="item"><div class="name">Cot / Bedside Crib / Moses Basket</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Mattress</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Fitted Sheets</div><div class="qty">Need: 3–4</div></div>
-<div class="item"><div class="name">Cellular Blankets</div><div class="qty">Need: 2–3</div></div>
-<div class="item"><div class="name">Sleeping Bags</div><div class="qty">Need: 2–3</div></div>
-<div class="item"><div class="name">Mattress Protectors</div><div class="qty">Need: 2</div></div>
-<div class="item"><div class="name">Room Thermometer</div><div class="qty">Need: 1</div></div>
+html+=`
+<div class="item ${record.claimed ? 'claimed' : ''}">
+<div class="name">${record.id}</div>
+<div class="qty">Need: ${record.qty}</div>
+`;
 
-</details>
+if(record.claimed){
 
-<details class="section">
-<summary>🧷 Nappies & Changing</summary>
+html+=`
+<div class="claimed-name">
+✅ Claimed by ${record.name}
+</div>
+`;
 
-<div class="item"><div class="name">Newborn Nappies</div><div class="qty">Need: 1–2 packs</div></div>
-<div class="item"><div class="name">Baby Wipes</div><div class="qty">Need: 1–2 packs</div></div>
-<div class="item"><div class="name">Changing Mat</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Barrier Cream</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Nappy Bags</div><div class="qty">Need: 1 pack</div></div>
-<div class="item"><div class="name">Muslin Cloths</div><div class="qty">Need: 10–15</div></div>
+}else{
 
-</details>
+html+=`
+<button class="claim-btn"
+onclick="claimItem('${record.id}')">
+Claim This Item
+</button>
+`;
 
-<details class="section">
-<summary>🍼 Feeding</summary>
+}
 
-<div class="item"><div class="name">Burp Cloths</div><div class="qty">Need: 6–10</div></div>
-<div class="item"><div class="name">Bibs</div><div class="qty">Need: 5–8</div></div>
-<div class="item"><div class="name">Breast Pads</div><div class="qty">Need: 1 pack</div></div>
-<div class="item"><div class="name">Nursing Bras</div><div class="qty">Need: 2–3</div></div>
-<div class="item"><div class="name">Baby Bottles</div><div class="qty">Need: 4–6</div></div>
-<div class="item"><div class="name">Sterilising Equipment</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Formula</div><div class="qty">If Needed</div></div>
-<div class="item"><div class="name">Breast Pump</div><div class="qty">Optional</div></div>
+html+=`</div>`;
 
-</details>
+});
 
-<details class="section">
-<summary>🛁 Bath & Baby Care</summary>
+html+=`</details>`;
+}
 
-<div class="item"><div class="name">Baby Bath</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Hooded Towels</div><div class="qty">Need: 2–3</div></div>
-<div class="item"><div class="name">Washcloths</div><div class="qty">Need: 3–5</div></div>
-<div class="item"><div class="name">Baby Wash</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Nail Clippers</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Digital Thermometer</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Hairbrush</div><div class="qty">Need: 1</div></div>
+document.getElementById("content").innerHTML=html;
 
-</details>
+window.claimItem=async function(name){
 
-<details class="section">
-<summary>🚗 Getting Around</summary>
+const buyer=prompt("Your name");
 
-<div class="item"><div class="name">Car Seat</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Pram / Pushchair</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Changing Bag</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Pram Rain Cover</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Baby Carrier</div><div class="qty">Optional</div></div>
+if(!buyer) return;
 
-</details>
+await setDoc(
+doc(db,"items",name),
+{
+name:buyer,
+claimed:true
+},
+{merge:true}
+);
 
-<details class="section">
-<summary>🏡 Home</summary>
+}
 
-<div class="item"><div class="name">Changing Station</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Laundry Basket</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Baby Monitor</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Night Light</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Blackout Curtains</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Storage Baskets</div><div class="qty">Need: 2–3</div></div>
+});
 
-</details>
-
-<details class="section">
-<summary>💗 Nice To Have</summary>
-
-<div class="item"><div class="name">Baby Gym / Play Mat</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Bouncer</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Memory Book</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Keepsake Box</div><div class="qty">Need: 1</div></div>
-<div class="item"><div class="name">Milestone Cards</div><div class="qty">Need: 1 Set</div></div>
-<div class="item"><div class="name">White Noise Machine</div><div class="qty">Optional</div></div>
-<div class="item"><div class="name">Bottle Warmer</div><div class="qty">Optional</div></div>
-
-</details>
-
-<footer>
-Thank you for helping us get ready for our little girl 💕
-</footer>
+</script>
 
 </body>
 </html>
