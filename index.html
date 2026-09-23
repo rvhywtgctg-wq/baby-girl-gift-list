@@ -207,6 +207,10 @@ category:section
 
 onSnapshot(collection(db,"items"),snapshot=>{
 
+document.getElementById("progress").innerText =
+"Firebase connected";
+
+
 const items=[];
 
 snapshot.forEach(docu=>{
