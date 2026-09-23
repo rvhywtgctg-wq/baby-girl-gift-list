@@ -4,104 +4,148 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>💗 Baby Girl Shopping List 💗</title>
+<title>Baby Girl Shopping List</title>
 
 <style>
-
-body{
-font-family:-apple-system,sans-serif;
-background:#fff7fa;
-margin:0;
-padding:15px;
+* {
+  box-sizing: border-box;
 }
 
-header{
-text-align:center;
-padding:20px;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #fff7fa;
+  color: #333;
+  margin: 0;
+  padding: 15px;
 }
 
-h1{
-color:#be6987;
+header {
+  text-align: center;
+  padding: 25px 10px;
 }
 
-.section{
-background:white;
-border-radius:20px;
-margin-bottom:15px;
-overflow:hidden;
-box-shadow:0 4px 10px rgba(0,0,0,.08);
+h1 {
+  color: #be6987;
+  font-size: 34px;
+  line-height: 1.2;
+  margin: 0 0 15px;
 }
 
-summary{
-padding:18px;
-font-weight:bold;
-background:#fce4ec;
-font-size:20px;
-cursor:pointer;
+header p {
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 0;
 }
 
-.item{
-padding:15px;
-border-bottom:1px solid #eee;
+.progress {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding: 18px;
+  text-align: center;
 }
 
-.item:last-child{
-border-bottom:none;
+.section {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
+  overflow: hidden;
 }
 
-.name{
-font-weight:600;
+summary {
+  background: #fce4ec;
+  color: #6e374b;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  list-style-position: inside;
+  padding: 18px;
 }
 
-.qty{
-font-size:13px;
-color:#777;
+.item {
+  border-bottom: 1px solid #eee;
+  padding: 16px;
 }
 
-.claim-btn{
-margin-top:10px;
-background:#be6987;
-color:white;
-border:none;
-padding:10px;
-border-radius:10px;
-width:100%;
+.item:last-child {
+  border-bottom: none;
 }
 
-.claimed{
-background:#ffe2ee;
+.item.claimed {
+  background: #ffe2ee;
 }
 
-.claimed-name{
-margin-top:8px;
-color:#be6987;
-font-weight:bold;
+.name {
+  font-size: 17px;
+  font-weight: 650;
 }
 
-.progress{
-background:white;
-padding:15px;
-border-radius:20px;
-margin-bottom:20px;
-text-align:center;
-font-weight:bold;
+.qty {
+  color: #777;
+  font-size: 14px;
+  margin-top: 4px;
 }
 
+.claim-btn {
+  background: #be6987;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 12px;
+  min-height: 48px;
+  padding: 12px;
+  width: 100%;
+}
+
+.claim-btn:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.claimed-name {
+  color: #9b4b69;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.error {
+  color: #a12040;
+}
+
+footer {
+  color: #777;
+  padding: 25px 10px;
+  text-align: center;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>💗 Baby Girl Shopping List 💗</h1>
-<p>Choose something you'd like to buy.</p>
+  <h1>💗 Baby Girl Shopping List 💗</h1>
+  <p>
+    Choose something you would like to buy and claim it so everyone
+    can avoid buying the same thing.
+  </p>
 </header>
 
 <div class="progress">
-<span id="progress">Loading...</span>
+  <span id="progress">Loading the list...</span>
 </div>
 
 <div id="content"></div>
+
+<footer>
+  Thank you for helping us get ready for our little girl 💕
+</footer>
 
 <script type="module">
 
@@ -109,187 +153,256 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 
 import {
-getFirestore,
-collection,
-doc,
-setDoc,
-getDocs,
-onSnapshot
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  onSnapshot,
+  runTransaction
 }
 from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
-apiKey:"AIzaSyBlKzM5qlgHTXuNn4p5BrMyjJxXLpNhWAY",
-authDomain:"baby-gift-list.firebaseapp.com",
-projectId:"baby-gift-list",
-storageBucket:"baby-gift-list.firebasestorage.app",
-messagingSenderId:"564970289812",
-appId:"1:564970289812:web:0f9377f1d675a53254d281"
+  apiKey: "AIzaSyBlKzM5qlgHTXuNn4p5BrMyjJxXLpNhWAY",
+  authDomain: "baby-gift-list.firebaseapp.com",
+  projectId: "baby-gift-list",
+  storageBucket: "baby-gift-list.firebasestorage.app",
+  messagingSenderId: "564970289812",
+  appId: "1:564970289812:web:0f9377f1d675a53254d281"
 };
-
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const categories = {
+  "👗 Clothing": [
+    ["Bodysuits", "6–8"],
+    ["Sleepsuits / Babygrows", "6–8"],
+    ["Cardigans / Jumpers", "2–3"],
+    ["Socks", "4–6 pairs"],
+    ["Soft Hats", "2–3"],
+    ["Warm Outdoor Layer", "1–2"],
+    ["Going Home Outfit", "1–2"],
+    ["Scratch Mitts", "1–2 pairs"]
+  ],
 
-"👗 Clothing":[
-["Bodysuits","6-8"],
-["Sleepsuits / Babygrows","6-8"],
-["Cardigans / Jumpers","2-3"],
-["Socks","4-6 pairs"],
-["Soft Hats","2-3"],
-["Warm Outdoor Layer","1-2"],
-["Going Home Outfit","1-2"],
-["Scratch Mitts","1-2 pairs"]
-],
+  "🛏 Sleeping": [
+    ["Cot / Bedside Crib", "1"],
+    ["Mattress", "1"],
+    ["Fitted Sheets", "3–4"],
+    ["Cellular Blankets", "2–3"],
+    ["Sleeping Bags", "2–3"],
+    ["Mattress Protectors", "2"],
+    ["Room Thermometer", "1"]
+  ],
 
-"🛏 Sleeping":[
-["Cot / Bedside Crib","1"],
-["Mattress","1"],
-["Fitted Sheets","3-4"],
-["Cellular Blankets","2-3"],
-["Sleeping Bags","2-3"],
-["Mattress Protectors","2"],
-["Room Thermometer","1"]
-],
+  "🧷 Nappies & Changing": [
+    ["Newborn Nappies", "1–2 packs"],
+    ["Baby Wipes", "1–2 packs"],
+    ["Changing Mat", "1"],
+    ["Barrier Cream", "1"],
+    ["Nappy Bags", "1 pack"],
+    ["Muslin Cloths", "10–15"]
+  ],
 
-"🧷 Nappies & Changing":[
-["Newborn Nappies","1-2 packs"],
-["Baby Wipes","1-2 packs"],
-["Changing Mat","1"],
-["Barrier Cream","1"],
-["Nappy Bags","1 pack"],
-["Muslin Cloths","10-15"]
-],
+  "🍼 Feeding": [
+    ["Baby Bottles", "4–6"],
+    ["Steriliser", "1"],
+    ["Bibs", "5–8"],
+    ["Breast Pump", "Optional"]
+  ],
 
-"🍼 Feeding":[
-["Baby Bottles","4-6"],
-["Steriliser","1"],
-["Bibs","5-8"],
-["Breast Pump","Optional"]
-],
+  "🚗 Getting Around": [
+    ["Car Seat", "1"],
+    ["Pram", "1"],
+    ["Changing Bag", "1"],
+    ["Pram Rain Cover", "1"],
+    ["Baby Carrier", "Optional"]
+  ],
 
-"🚗 Getting Around":[
-["Car Seat","1"],
-["Pram","1"],
-["Changing Bag","1"],
-["Pram Rain Cover","1"],
-["Baby Carrier","Optional"]
-],
-
-"🏡 Home":[
-["Baby Monitor","1"],
-["Night Light","1"],
-["Storage Baskets","2-3"],
-["Laundry Basket","1"]
-]
+  "🏡 Home": [
+    ["Baby Monitor", "1"],
+    ["Night Light", "1"],
+    ["Storage Baskets", "2–3"],
+    ["Laundry Basket", "1"]
+  ]
 };
 
-for(const section in categories){
+function makeItemId(itemName) {
+  return itemName.replaceAll("/", "-");
+}
 
-for(const item of categories[section]){
+function getTotalItems() {
+  return Object.values(categories).reduce(
+    (total, categoryItems) => total + categoryItems.length,
+    0
+  );
+}
 
-await setDoc(
-doc(db,"items",item[0].replaceAll("/","-")),
+/*
+Creates an item only when it does not already exist.
+This means opening the website will not erase existing claims.
+*/
+async function createMissingItems() {
+  for (const category in categories) {
+    for (const item of categories[category]) {
+      const itemName = item[0];
+      const quantity = item[1];
+      const itemId = makeItemId(itemName);
+      const itemReference = doc(db, "items", itemId);
+      const existingItem = await getDoc(itemReference);
 
-{
-name:"",
-claimed:false,
-qty:item[1],
-category:section
-},
-{merge:true}
+      if (!existingItem.exists()) {
+        await setDoc(itemReference, {
+          itemName: itemName,
+          qty: quantity,
+          category: category,
+          claimed: false,
+          claimedBy: ""
+        });
+      }
+    }
+  }
+}
+
+function renderList(savedItems) {
+  const claimedCount = savedItems.filter(item => item.claimed).length;
+
+  document.getElementById("progress").innerText =
+    `${claimedCount} of ${getTotalItems()} items claimed`;
+
+  let html = "";
+
+  for (const category in categories) {
+    html += `
+      <details class="section" open>
+        <summary>${category}</summary>
+    `;
+
+    categories[category].forEach(item => {
+      const itemName = item[0];
+      const quantity = item[1];
+      const itemId = makeItemId(itemName);
+
+      const record = savedItems.find(
+        savedItem => savedItem.id === itemId
+      );
+
+      const isClaimed = Boolean(record && record.claimed);
+
+      const claimedBy = record
+        ? record.claimedBy || record.name || ""
+        : "";
+
+      html += `
+        <div class="item ${isClaimed ? "claimed" : ""}">
+          <div class="name">${itemName}</div>
+          <div class="qty">Need: ${quantity}</div>
+      `;
+
+      if (isClaimed) {
+        html += `
+          <div class="claimed-name">
+            ✅ Claimed by ${claimedBy}
+          </div>
+        `;
+      } else {
+        html += `
+          <button
+            class="claim-btn"
+            data-item-id="${itemId}">
+            Claim This Item
+          </button>
+        `;
+      }
+
+      html += `</div>`;
+    });
+
+    html += `</details>`;
+  }
+
+  document.getElementById("content").innerHTML = html;
+
+  document.querySelectorAll(".claim-btn").forEach(button => {
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      button.innerText = "Saving...";
+
+      await claimItem(button.dataset.itemId);
+
+      button.disabled = false;
+      button.innerText = "Claim This Item";
+    });
+  });
+}
+
+async function claimItem(itemId) {
+  const buyer = prompt("What is your name?");
+
+  if (!buyer || !buyer.trim()) {
+    return;
+  }
+
+  const itemReference = doc(db, "items", itemId);
+
+  try {
+    await runTransaction(db, async transaction => {
+      const currentItem = await transaction.get(itemReference);
+
+      if (!currentItem.exists()) {
+        throw new Error("This item could not be found.");
+      }
+
+      if (currentItem.data().claimed) {
+        throw new Error(
+          "Sorry, somebody else has already claimed this item."
+        );
+      }
+
+      transaction.update(itemReference, {
+        claimed: true,
+        claimedBy: buyer.trim()
+      });
+    });
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+onSnapshot(
+  collection(db, "items"),
+
+  snapshot => {
+    const savedItems = [];
+
+    snapshot.forEach(documentSnapshot => {
+      savedItems.push({
+        id: documentSnapshot.id,
+        ...documentSnapshot.data()
+      });
+    });
+
+    renderList(savedItems);
+  },
+
+  error => {
+    console.error(error);
+
+    document.getElementById("progress").innerHTML =
+      '<span class="error">The list could not be loaded. Please check the Firebase rules.</span>';
+  }
 );
 
+try {
+  await createMissingItems();
+} catch (error) {
+  console.error(error);
+
+  document.getElementById("progress").innerHTML =
+    '<span class="error">The list could not be set up. Please check the Firebase rules.</span>';
 }
-}
-
-onSnapshot(collection(db,"items"),snapshot=>{
-
-
-const items=[];
-
-snapshot.forEach(docu=>{
-items.push({
-id:docu.id,
-...docu.data()
-});
-});
-
-const claimed=items.filter(i=>i.claimed).length;
-
-document.getElementById("progress").innerText=
-`${claimed} of ${items.length} items claimed`;
-
-let html="";
-
-for(const section in categories){
-
-html+=`
-<details class="section" open>
-<summary>${section}</summary>
-`;
-
-categories[section].forEach(item=>{
-
-const record=items.find(x=>x.id===item[0].replaceAll("/","-"));
-
-
-if(!record)return;
-
-html+=`
-<div class="item ${record.claimed ? 'claimed' : ''}">
-<div class="name">${record.id}</div>
-<div class="qty">Need: ${record.qty}</div>
-`;
-
-if(record.claimed){
-
-html+=`
-<div class="claimed-name">
-✅ Claimed by ${record.name}
-</div>
-`;
-
-}else{
-
-html+=`
-<button class="claim-btn"
-onclick="claimItem('${record.id}')">
-Claim This Item
-</button>
-`;
-
-}
-
-html+=`</div>`;
-
-});
-
-html+=`</details>`;
-}
-
-document.getElementById("content").innerHTML=html;
-
-window.claimItem=async function(name){
-
-const buyer=prompt("Your name");
-
-if(!buyer) return;
-
-await setDoc(
-doc(db,"items",name),
-{
-name:buyer,
-claimed:true
-},
-{merge:true}
-);
-
-}
-
-});
 
 </script>
 
