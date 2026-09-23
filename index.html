@@ -20,32 +20,14 @@ import {getFirestore,collection,doc,getDoc,setDoc,onSnapshot,runTransaction} fro
 const firebaseConfig={apiKey:"AIzaSyBlKzM5qlgHTXuNn4p5BrMyjJxXLpNhWAY",authDomain:"baby-gift-list.firebaseapp.com",projectId:"baby-gift-list",storageBucket:"baby-gift-list.firebasestorage.app",messagingSenderId:"564970289812",appId:"1:564970289812:web:0f9377f1d675a53254d281"};
 const app=initializeApp(firebaseConfig);const db=getFirestore(app);
 const categories={
-"👗 Clothing":[["Bodysuits","6–8"],["Sleepsuits / Babygrows","6–8"],["Cardigans / Jumpers","2–3"],["Socks","4–6 pairs"],["Soft Hats","2–3"],["Warm Outdoor Layer","1–2"],["Scratch Mitts","1–2 pairs"]],
+"👗 Clothing":[["Bodysuits","6–8"],["Sleepsuits / Babygrows","6–8"],["Cardigans / Jumpers","2–3"],["Socks","4–6 pairs"],["Soft Hats","2–3"],["Warm Outdoor Layer","1–2"],["Going-Home Outfit","1–2"],["Scratch Mitts","1–2 pairs"]],
 "🛏 Sleeping":[["Cot / Bedside Crib / Moses Basket","1"],["Firm, Flat Mattress","1"],["Fitted Sheets","3–4"],["Cellular Blankets","2–3"],["Baby Sleeping Bags","2–3"],["Waterproof Mattress Protectors","2"],["Room Thermometer","1"]],
 "🧷 Nappies & Changing":[["Newborn Nappies","1–2 packs"],["Newborn Wipes or Cotton Wool","1–2 packs"],["Changing Mat","1"],["Nappy Barrier Cream","1"],["Nappy Bags / Reusable Alternative","1 pack"],["Muslin Cloths","10–15"]],
 "🍼 Feeding":[["Muslin / Burp Cloths","6–10"],["Bibs","5–8"],["Baby Bottles","4–6"],["Sterilising Equipment","1"],["Formula","If needed"]],
-
-
 "🛁 Bath & Baby Care":[["Baby Bath / Bath Support","1"],["Hooded Towels","2–3"],["Soft Washcloths","3–5"],["Gentle Baby Wash","1"],["Baby Nail File / Clippers","1"],["Digital Thermometer","1"],["Soft Hairbrush / Comb","1"]],
 "🚗 Getting Around":[["Rear-Facing Car Seat Suitable From Birth","1"],["Pram / Pushchair","1"],["Changing Bag","1"],["Pram Rain Cover","1"],["Baby Carrier / Sling","Optional"]],
 "🏡 Home":[["Changing Basket / Station","1"],["Laundry Basket","1"],["Baby Monitor","1"],["Night Light","1"],["Blackout Blind / Curtains","1"],["Storage Baskets","2–3"]],
-"💗 Nice to Have":[
-["Baby Gym / Play Mat","1"],
-
-["Bouncer","1","https://www.amazon.co.uk/Galt-Toys-1004057-Farm-Playnest/dp/B00AN1KU1K"\],
-
-["Rocking Chair / Glider","1"],
-["Baby Memory Book","1"],
-["Keepsake Box","1"],
-["Milestone Cards","1 set"],
-["Pram Organiser","1"],
-["Portable Changing Mat","1"],
-["White-Noise Machine","Optional"],
-["Breastfeeding Pillow","Optional"],
-["Bottle Warmer","Optional"],
-["Nappy Caddy","1"]
-],
-
+"💗 Nice to Have":[["Baby Gym / Play Mat","1"],["Bouncer","1"],["Rocking Chair / Glider","1"],["Baby Memory Book","1"],["Keepsake Box","1"],["Milestone Cards","1 set"],["Pram Organiser","1"],["Portable Changing Mat","1"],["White-Noise Machine","Optional"],["Breastfeeding Pillow","Optional"],["Bottle Warmer","Optional"],["Nappy Caddy","1"]],
 "👜 Hospital Bag — Baby":[["Hospital Bag Sleepsuits","4–6"],["Hospital Bag Bodysuits","4–6"],["Hospital Bag Hats","2"],["Hospital Bag Socks / Mittens","1–2 pairs"],["Hospital Bag Muslins","3–4"],["Hospital Bag Nappies","1 pack"],["Hospital Bag Wipes / Cotton Wool","1 pack"],["Hospital Bag Cellular Blanket","1"],["Hospital Bag Going-Home Outfit","1"]]
 };
 function makeItemId(category,itemName){return encodeURIComponent(category+"___"+itemName)}
