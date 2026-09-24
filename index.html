@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#be6987">
-<title>Baby Girl Gift List</title>
+<title>Baby Rodgers Gift List</title>
 <style>
 :root{--pink:#be6987;--dark:#6e374b;--light:#fce4ec;--page:#fff7fa;--green:#357a4a;--grey:#666}
 *{box-sizing:border-box}
@@ -51,8 +51,8 @@ footer{color:#777;padding:22px 10px;text-align:center}
 <body>
 <main>
 <header>
-<h1>💗 Baby Girl Gift List 💗</h1>
-<p>Thank you for helping us get ready for our little girl.</p>
+<h1>💗 Baby Rodgers Gift List 💗</h1>
+<p>Thank you for helping us get ready for Baby Rodgers.</p>
 </header>
 
 <section class="notice">
@@ -84,7 +84,7 @@ Please view the product link and current price first. For anything other than cl
 <div id="noteStatus" class="note-status"></div>
 </section>
 
-<footer>Thank you for helping us get ready for our little girl 💕</footer>
+<footer>Thank you for helping us get ready for Baby Rodgers 💕</footer>
 </main>
 
 <script type="module">
@@ -123,9 +123,8 @@ const categories={
   ["Cellular Blankets","2–3"],
   ["Baby Sleeping Bags","2–3"],
   ["Waterproof Mattress Protectors","2"],
-  ["Room Thermometer","1","https://www.amazon.co.uk/Tommee-GroEgg2-Digital-Changing-Thermometer/dp/B08BD8TFV4"],
-  ["Bath Thermometer","1","https://www.amazon.co.uk/Tommee-Tippee-Closer-Nature-Thermometer/dp/B00OB25IKK"\]
-
+  ["Room Thermometer","1","https://www.amazon.co.uk/Tommee-GroEgg2-Digital-Changing-Thermometer/dp/B08BD8TFV4"]
+ ],
  "🧷 Nappies & Changing":[
   ["Newborn Nappies","1–2 packs"],
   ["Newborn Wipes or Cotton Wool","1–2 packs"],
@@ -147,6 +146,7 @@ const categories={
  ],
  "🛁 Bath & Baby Care":[
   ["Baby Bath / Bath Support","1"],
+  ["Bath Thermometer","1","https://www.amazon.co.uk/Tommee-Tippee-Closer-Nature-Thermometer/dp/B00OB25IKK"],
   ["Hooded Towels","2–3"],
   ["Soft Washcloths","3–5"],
   ["Gentle Baby Wash","1"],
@@ -173,8 +173,8 @@ const categories={
  ],
  "💗 Nice to Have":[
   ["Baby Gym / Play Mat","1","https://www.amazon.co.uk/Bebamour-Playmats-Hanging-Activity-0-24Months/dp/B0CL29NX9S"],
-  ["Playnest / Sit-Me-Up","1","https://www.amazon.co.uk/Galt-Toys-1004057-Farm-Playnest/dp/B00AN1KU1K"],
-  ["Baby Snug Floor Seat and Activity Tray","1","https://www.amazon.co.uk/Mamas-Papas-Activity-Adjustable-Supportive/dp/B09PF1WVW2"],
+  ["Galt Farm Playnest","1","https://www.amazon.co.uk/Galt-Toys-1004057-Farm-Playnest/dp/B00AN1KU1K"],
+  ["Mamas & Papas Baby Snug Seat","1","https://www.amazon.co.uk/Mamas-Papas-Activity-Adjustable-Supportive/dp/B09PF1WVW2"],
   ["Rocking Chair / Glider","1"],
   ["Baby Memory Book","1"],
   ["Keepsake Box","1"],
@@ -292,12 +292,19 @@ async function claimItem(id){
 }
 
 async function unclaimItem(id){
+ const person=prompt("Enter the name used to claim this item. Jordan can unclaim any item.");
+ if(!person?.trim())return;
+ const enteredName=person.trim();
  if(!confirm("Make this item available again?"))return;
  const ref=doc(db,"items",id);
  try{
   await runTransaction(db,async tx=>{
    const snap=await tx.get(ref);
    if(!snap.exists())throw new Error("This item could not be found.");
+   const claimedBy=(snap.data().claimedBy||snap.data().name||"").trim();
+   const isJordan=enteredName.toLowerCase()==="jordan";
+   const isClaimant=enteredName.toLowerCase()===claimedBy.toLowerCase();
+   if(!isJordan&&!isClaimant)throw new Error("Only the person who claimed this item, or Jordan, can unclaim it.");
    tx.update(ref,{claimed:false,claimedBy:""});
   });
  }catch(e){alert(e.message)}
