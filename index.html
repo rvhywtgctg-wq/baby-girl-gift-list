@@ -3,43 +3,359 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Baby Girl Shopping List</title>
+<meta name="theme-color" content="#be6987">
+<title>Baby Girl Gift List</title>
 <style>
-*{box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff7fa;color:#444;margin:0;padding:15px}header{text-align:center;padding:24px 10px}h1{color:#be6987;font-size:32px;line-height:1.2;margin:0 0 10px}header p{color:#666;font-size:16px;line-height:1.45;margin:0}.progress,.notes{background:#fff;border-radius:18px;box-shadow:0 3px 10px rgba(0,0,0,.06);margin-bottom:18px;padding:16px}.progress{text-align:center;font-weight:700}.section{background:#fff;border-radius:18px;box-shadow:0 4px 10px rgba(0,0,0,.08);margin-bottom:15px;overflow:hidden}summary{background:#fce4ec;color:#6e374b;cursor:pointer;font-size:19px;font-weight:700;padding:17px}.item{border-bottom:1px solid #eee;padding:15px}.item:last-child{border-bottom:0}.item.claimed{background:#ffe8f0}.name{font-size:16px;font-weight:650}.qty{color:#777;font-size:13px;margin-top:4px}.button-row{display:grid;gap:8px;grid-template-columns:1fr;margin-top:10px}button{border:0;border-radius:10px;cursor:pointer;font-size:15px;min-height:46px;padding:10px;width:100%}.claim-btn{background:#be6987;color:#fff}.unclaim-btn{background:#fff;border:1px solid #be6987;color:#9b4b69}.claimed-name{color:#9b4b69;font-size:14px;font-weight:700;margin-top:9px}.notes h2{color:#9b4b69;font-size:20px;margin:0 0 8px}.notes p{color:#777;font-size:14px;margin:0 0 10px}.notes textarea{border:1px solid #e4c7d1;border-radius:12px;font:inherit;min-height:130px;padding:12px;resize:vertical;width:100%}.save-notes{background:#9b4b69;color:#fff;margin-top:10px}.note-status{color:#777;font-size:13px;margin-top:8px;min-height:18px}.error{color:#a12040}footer{color:#777;padding:22px 10px;text-align:center}@media(min-width:650px){body{max-width:850px;margin:auto}.button-row{grid-template-columns:1fr 1fr}}
+:root{--pink:#be6987;--dark:#6e374b;--light:#fce4ec;--page:#fff7fa;--green:#357a4a;--grey:#666}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--page);color:#444;margin:0;padding:15px}
+main{max-width:850px;margin:auto}
+header{text-align:center;padding:24px 10px}
+h1{color:var(--pink);font-size:32px;line-height:1.2;margin:0 0 10px}
+header p{color:var(--grey);font-size:16px;line-height:1.5;margin:0}
+.notice,.toolbar,.progress,.notes{background:#fff;border-radius:18px;box-shadow:0 3px 10px rgba(0,0,0,.06);margin-bottom:18px;padding:16px}
+.notice{border:2px solid #f4ceda;text-align:center;line-height:1.5}
+.notice strong{color:var(--dark)}
+.progress{text-align:center;font-weight:700}
+.progress-bar{background:#f3e8ec;border-radius:999px;height:10px;margin-top:10px;overflow:hidden}
+.progress-fill{background:var(--pink);height:100%;width:0;transition:width .25s}
+.toolbar input{border:1px solid #dfc7d0;border-radius:12px;font:inherit;padding:13px;width:100%}
+.filters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.filter-btn{background:#f6edf0;color:var(--dark)}
+.filter-btn.active{background:var(--pink);color:#fff}
+.section{background:#fff;border-radius:18px;box-shadow:0 4px 10px rgba(0,0,0,.08);margin-bottom:15px;overflow:hidden}
+summary{background:var(--light);color:var(--dark);cursor:pointer;font-size:19px;font-weight:700;padding:17px}
+.item{border-bottom:1px solid #eee;padding:15px}
+.item:last-child{border-bottom:0}
+.item.claimed{background:#ffe8f0}
+.name{font-size:16px;font-weight:650}
+.qty{color:#777;font-size:13px;margin-top:4px}
+.claimed-name{color:#9b4b69;font-size:14px;font-weight:700;margin-top:9px}
+.product-link{align-items:center;background:#eef7f0;border:1px solid #b9d8c0;border-radius:10px;color:var(--green);display:flex;font-weight:700;justify-content:center;margin-top:10px;min-height:46px;padding:10px;text-decoration:none;width:100%}
+.no-link{background:#fff8e8;border:1px solid #ead7aa;border-radius:10px;color:#765d26;font-size:13px;line-height:1.4;margin-top:10px;padding:10px}
+.button-row{display:grid;gap:8px;grid-template-columns:1fr;margin-top:10px}
+button{border:0;border-radius:10px;cursor:pointer;font-size:15px;min-height:46px;padding:10px;width:100%}
+.claim-btn{background:var(--pink);color:#fff}
+.unclaim-btn{background:#fff;border:1px solid var(--pink);color:#9b4b69}
+.notes h2{color:#9b4b69;font-size:20px;margin:0 0 8px}
+.notes p{color:#777;font-size:14px;margin:0 0 10px}
+.notes textarea{border:1px solid #e4c7d1;border-radius:12px;font:inherit;min-height:130px;padding:12px;resize:vertical;width:100%}
+.save-notes{background:#9b4b69;color:#fff;margin-top:10px}
+.note-status{color:#777;font-size:13px;margin-top:8px;min-height:18px}
+.empty{background:#fff;border-radius:18px;color:#777;margin-bottom:15px;padding:20px;text-align:center}
+.error{color:#a12040}
+footer{color:#777;padding:22px 10px;text-align:center}
+@media(min-width:650px){.button-row{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-<header><h1>💗 Baby Girl Shopping List 💗</h1><p>Choose something you would like to buy and claim it so everyone can avoid buying the same thing.</p></header>
-<div class="progress"><span id="progress">Loading the list...</span></div>
+<main>
+<header>
+<h1>💗 Baby Girl Gift List 💗</h1>
+<p>Thank you for helping us get ready for our little girl.</p>
+</header>
+
+<section class="notice">
+<strong>Before claiming an item</strong><br>
+Please view the product link and current price first. For anything other than clothing without a product link, please contact Jordan or Chloe before purchasing so we can share the exact item we have in mind. Thank you so much for your kindness and support! 💕
+</section>
+
+<section class="progress">
+<span id="progress">Loading the list...</span>
+<div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+</section>
+
+<section class="toolbar">
+<input id="searchBox" type="search" placeholder="Search the list, for example pram or thermometer" autocomplete="off">
+<div class="filters">
+<button class="filter-btn active" data-filter="all">All</button>
+<button class="filter-btn" data-filter="available">Available</button>
+<button class="filter-btn" data-filter="claimed">Claimed</button>
+</div>
+</section>
+
 <div id="content"></div>
-<section class="notes"><h2>♡ Family notes / things we still need</h2><p>These notes are shared and update for everyone.</p><textarea id="familyNotes" placeholder="Add a note for the family..."></textarea><button id="saveNotes" class="save-notes">Save Family Notes</button><div id="noteStatus" class="note-status"></div></section>
+
+<section class="notes">
+<h2>♡ Family notes / things we still need</h2>
+<p>These notes are shared and update for everyone.</p>
+<textarea id="familyNotes" placeholder="Add a note for the family..."></textarea>
+<button id="saveNotes" class="save-notes">Save Family Notes</button>
+<div id="noteStatus" class="note-status"></div>
+</section>
+
 <footer>Thank you for helping us get ready for our little girl 💕</footer>
+</main>
+
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import {getFirestore,collection,doc,getDoc,setDoc,onSnapshot,runTransaction} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-const firebaseConfig={apiKey:"AIzaSyBlKzM5qlgHTXuNn4p5BrMyjJxXLpNhWAY",authDomain:"baby-gift-list.firebaseapp.com",projectId:"baby-gift-list",storageBucket:"baby-gift-list.firebasestorage.app",messagingSenderId:"564970289812",appId:"1:564970289812:web:0f9377f1d675a53254d281"};
-const app=initializeApp(firebaseConfig);const db=getFirestore(app);
-const categories={
-"👗 Clothing":[["Bodysuits","6–8"],["Sleepsuits / Babygrows","6–8"],["Cardigans / Jumpers","2–3"],["Socks","4–6 pairs"],["Soft Hats","2–3"],["Warm Outdoor Layer","1–2"],["Going-Home Outfit","1–2"],["Scratch Mitts","1–2 pairs"]],
-"🛏 Sleeping":[["Cot / Bedside Crib / Moses Basket","1"],["Firm, Flat Mattress","1"],["Fitted Sheets","3–4"],["Cellular Blankets","2–3"],["Baby Sleeping Bags","2–3"],["Waterproof Mattress Protectors","2"],["Room Thermometer","1"]],
-"🧷 Nappies & Changing":[["Newborn Nappies","1–2 packs"],["Newborn Wipes or Cotton Wool","1–2 packs"],["Changing Mat","1"],["Nappy Barrier Cream","1"],["Nappy Bags / Reusable Alternative","1 pack"],["Muslin Cloths","10–15"]],
-"🍼 Feeding":[["Muslin / Burp Cloths","6–10"],["Bibs","5–8"],["Baby Bottles","4–6"],["Sterilising Equipment","1"],["Formula","If needed"]],
-"🛁 Bath & Baby Care":[["Baby Bath / Bath Support","1"],["Hooded Towels","2–3"],["Soft Washcloths","3–5"],["Gentle Baby Wash","1"],["Baby Nail File / Clippers","1"],["Digital Thermometer","1"],["Soft Hairbrush / Comb","1"]],
-"🚗 Getting Around":[["Rear-Facing Car Seat Suitable From Birth","1"],["Pram / Pushchair","1"],["Changing Bag","1"],["Pram Rain Cover","1"],["Baby Carrier / Sling","Optional"]],
-"🏡 Home":[["Changing Basket / Station","1"],["Laundry Basket","1"],["Baby Monitor","1"],["Night Light","1"],["Blackout Blind / Curtains","1"],["Storage Baskets","2–3"]],
-"💗 Nice to Have":[["Baby Gym / Play Mat","1"],["Bouncer","1"],["Rocking Chair / Glider","1"],["Baby Memory Book","1"],["Keepsake Box","1"],["Milestone Cards","1 set"],["Pram Organiser","1"],["Portable Changing Mat","1"],["White-Noise Machine","Optional"],["Breastfeeding Pillow","Optional"],["Bottle Warmer","Optional"],["Nappy Caddy","1"]],
-"👜 Hospital Bag — Baby":[["Hospital Bag Sleepsuits","4–6"],["Hospital Bag Bodysuits","4–6"],["Hospital Bag Hats","2"],["Hospital Bag Socks / Mittens","1–2 pairs"],["Hospital Bag Muslins","3–4"],["Hospital Bag Nappies","1 pack"],["Hospital Bag Wipes / Cotton Wool","1 pack"],["Hospital Bag Cellular Blanket","1"],["Hospital Bag Going-Home Outfit","1"]]
+
+const firebaseConfig={
+ apiKey:"AIzaSyBlKzM5qlgHTXuNn4p5BrMyjJxXLpNhWAY",
+ authDomain:"baby-gift-list.firebaseapp.com",
+ projectId:"baby-gift-list",
+ storageBucket:"baby-gift-list.firebasestorage.app",
+ messagingSenderId:"564970289812",
+ appId:"1:564970289812:web:0f9377f1d675a53254d281"
 };
+
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+
+// Each item is: [name, quantity, optional product link]
+const categories={
+ "👗 Clothing":[
+  ["Bodysuits","6–8"],
+  ["Sleepsuits / Babygrows","6–8"],
+  ["Cardigans / Jumpers","2–3"],
+  ["Socks","4–6 pairs"],
+  ["Soft Hats","2–3"],
+  ["Warm Outdoor Layer","1–2"],
+  ["Going-Home Outfit","1–2"],
+  ["Scratch Mitts","1–2 pairs"],
+  ["Swaddle Wraps","3 pack","https://www.amazon.co.uk/GLLQUEN-Swaddle-Months-Organic-OEKO-TEX/dp/B093BSZK4H"]
+ ],
+ "🛏 Sleeping":[
+  ["Cot / Bedside Crib / Moses Basket","1"],
+  ["Firm, Flat Mattress","1"],
+  ["Fitted Sheets","3–4"],
+  ["Cellular Blankets","2–3"],
+  ["Baby Sleeping Bags","2–3"],
+  ["Waterproof Mattress Protectors","2"],
+  ["Room Thermometer","1","https://www.amazon.co.uk/Tommee-GroEgg2-Digital-Changing-Thermometer/dp/B08BD8TFV4"],
+  ["Night Light and Bath Thermometer","1","https://www.amazon.co.uk/Tommee-Tippee-Closer-Nature-Thermometer/dp/B00OB25IKK"]
+ ],
+ "🧷 Nappies & Changing":[
+  ["Newborn Nappies","1–2 packs"],
+  ["Newborn Wipes or Cotton Wool","1–2 packs"],
+  ["Changing Mat","1","https://www.amazon.co.uk/Baby-Changing-Changer-Newborn-Waterproof/dp/B0CBXLGFSN"],
+  ["Portable Travel Changing Mat","1","https://www.amazon.co.uk/Polar-Gear-Portable-Baby-Essentials/dp/B0DX1ZMG2M"],
+  ["Nappy Barrier Cream","1"],
+  ["Nappy Bags / Reusable Alternative","1 pack"],
+  ["Muslin Cloths","10–15"],
+  ["Nappy Caddy","1","https://www.amazon.co.uk/Organiser-Portable-Caddy-Nursery-Changeable-Compartments/dp/B09BF21NWN"]
+ ],
+ "🍼 Feeding":[
+  ["Muslin / Burp Cloths","6–10"],
+  ["Bibs","5–8"],
+  ["Baby Bottles","4–6"],
+  ["Sterilising Equipment","1"],
+  ["Formula","If needed"],
+  ["Highchair","1","https://www.amazon.co.uk/My-Babiie-Elephants-Compact-Highchair/dp/B096G3452H"],
+  ["Baby Food Maker","1","https://www.amazon.co.uk/Processor-Blender-Grinder-Grinding-BPA-Free/dp/B0CWYV83RL"]
+ ],
+ "🛁 Bath & Baby Care":[
+  ["Baby Bath / Bath Support","1"],
+  ["Hooded Towels","2–3"],
+  ["Soft Washcloths","3–5"],
+  ["Gentle Baby Wash","1"],
+  ["Baby Nail File / Clippers","1"],
+  ["Digital Thermometer","1","https://www.amazon.co.uk/Braun-Digital-StickThermometer-Precision-PRT2000/dp/B00M35Y326"],
+  ["Soft Hairbrush / Comb","1"],
+  ["Baby Healthcare and Grooming Kit","1","https://www.amazon.co.uk/Healthcare-Grooming-Essential-Wipe-Clean-Waterproof/dp/B002IS0M32"]
+ ],
+ "🚗 Getting Around":[
+  ["Rear-Facing Car Seat Suitable From Birth","1"],
+  ["Pram / Pushchair","1"],
+  ["Changing Bag","1"],
+  ["Pram Rain Cover","1"],
+  ["Baby Carrier / Sling","Optional"],
+  ["Rechargeable Pram Rocker","1","https://www.amazon.co.uk/Rockit-Rechargeable-Version-Stroller-Pushchair/dp/B0BNP1G2ZD"]
+ ],
+ "🏡 Home":[
+  ["Changing Basket / Station","1"],
+  ["Laundry Basket","1"],
+  ["Baby Monitor","1"],
+  ["Night Light","1"],
+  ["Blackout Blind / Curtains","1"],
+  ["Storage Baskets","2–3"]
+ ],
+ "💗 Nice to Have":[
+  ["Baby Gym / Play Mat","1","https://www.amazon.co.uk/Bebamour-Playmats-Hanging-Activity-0-24Months/dp/B0CL29NX9S"],
+  ["Playnest / Sit-Me-Up","1","https://www.amazon.co.uk/Galt-Toys-1004057-Farm-Playnest/dp/B00AN1KU1K"],
+  ["Baby Snug Floor Seat and Activity Tray","1","https://www.amazon.co.uk/Mamas-Papas-Activity-Adjustable-Supportive/dp/B09PF1WVW2"],
+  ["Rocking Chair / Glider","1"],
+  ["Baby Memory Book","1"],
+  ["Keepsake Box","1"],
+  ["Milestone Cards","1 set"],
+  ["Pram Organiser","1"],
+  ["White-Noise Machine","Optional"],
+  ["Breastfeeding Pillow","Optional"],
+  ["Bottle Warmer","Optional"]
+ ],
+ "👜 Hospital Bag — Chloe":[
+  ["Maternity Notes and Birth Plan","1"],
+  ["Comfortable Nightwear","2–3"],
+  ["Dressing Gown and Slippers","1"],
+  ["Maternity Pads","2 packs"],
+  ["Disposable or Large Comfortable Underwear","Several pairs"],
+  ["Nursing Bras","2"],
+  ["Breast Pads","1 pack"],
+  ["Toiletries and Hair Ties","1 bag"],
+  ["Lip Balm","1"],
+  ["Going-Home Outfit","1"],
+  ["Phone and Long Charging Cable","1"],
+  ["Drinks and Snacks","As needed"]
+ ],
+ "👶 Hospital Bag — Baby":[
+  ["Hospital Bag Sleepsuits","4–6"],
+  ["Hospital Bag Bodysuits","4–6"],
+  ["Hospital Bag Hats","2"],
+  ["Hospital Bag Socks / Mittens","1–2 pairs"],
+  ["Hospital Bag Muslins","3–4"],
+  ["Hospital Bag Nappies","1 pack"],
+  ["Hospital Bag Wipes / Cotton Wool","1 pack"],
+  ["Hospital Bag Cellular Blanket","1"],
+  ["Hospital Bag Going-Home Outfit","1"],
+  ["Car Seat Ready in the Car","1"]
+ ],
+ "🎒 Hospital Bag — Jordan":[
+  ["Change of Clothes","1–2"],
+  ["Toiletries","1 bag"],
+  ["Phone and Long Charging Cable","1"],
+  ["Drinks and Snacks","As needed"],
+  ["Wallet, Keys and Parking Information","1 set"],
+  ["Pillow or Travel Cushion","Optional"],
+  ["Any Regular Medication","As needed"]
+ ]
+};
+
+let currentFilter="all";
+let currentSearch="";
+let latestSaved=[];
+
 function makeItemId(category,itemName){return encodeURIComponent(category+"___"+itemName)}
 function totalItems(){return Object.values(categories).reduce((n,a)=>n+a.length,0)}
-async function createMissingItems(){for(const category in categories){for(const [itemName,qty] of categories[category]){const id=makeItemId(category,itemName),ref=doc(db,"items",id),snap=await getDoc(ref);if(!snap.exists())await setDoc(ref,{itemName,qty,category,claimed:false,claimedBy:""})}}}
-function renderList(saved){const claimed=saved.filter(x=>x.claimed).length;document.getElementById("progress").textContent=`${claimed} of ${totalItems()} items claimed`;let html="";for(const category in categories){html+=`<details class="section"><summary>${category}</summary>`;for(const [itemName,qty] of categories[category]){const id=makeItemId(category,itemName),record=saved.find(x=>x.id===id),isClaimed=Boolean(record?.claimed),claimedBy=record?.claimedBy||record?.name||"";html+=`<div class="item ${isClaimed?"claimed":""}"><div class="name">${itemName}</div><div class="qty">Need: ${qty}</div>`;if(isClaimed){html+=`<div class="claimed-name">✅ Claimed by ${claimedBy}</div><div class="button-row"><button class="unclaim-btn" data-id="${id}">Unclaim Item</button></div>`}else{html+=`<div class="button-row"><button class="claim-btn" data-id="${id}">Claim This Item</button></div>`}html+="</div>"}html+="</details>"}document.getElementById("content").innerHTML=html;document.querySelectorAll(".claim-btn").forEach(b=>b.onclick=()=>claimItem(b.dataset.id));document.querySelectorAll(".unclaim-btn").forEach(b=>b.onclick=()=>unclaimItem(b.dataset.id))}
-async function claimItem(id){const buyer=prompt("What is your name?");if(!buyer?.trim())return;const ref=doc(db,"items",id);try{await runTransaction(db,async tx=>{const snap=await tx.get(ref);if(!snap.exists())throw new Error("This item could not be found.");if(snap.data().claimed)throw new Error("Sorry, somebody else has already claimed this item.");tx.update(ref,{claimed:true,claimedBy:buyer.trim()})})}catch(e){alert(e.message)}}
-async function unclaimItem(id){if(!confirm("Make this item available again?"))return;const ref=doc(db,"items",id);try{await runTransaction(db,async tx=>{const snap=await tx.get(ref);if(!snap.exists())throw new Error("This item could not be found.");tx.update(ref,{claimed:false,claimedBy:""})})}catch(e){alert(e.message)}}
-onSnapshot(collection(db,"items"),snap=>{const saved=[];snap.forEach(s=>saved.push({id:s.id,...s.data()}));renderList(saved)},e=>{console.error(e);document.getElementById("progress").innerHTML='<span class="error">The list could not be loaded. Please check Firebase.</span>'});
-const notesRef=doc(db,"shared","familyNotes");let notesLoaded=false;onSnapshot(notesRef,snap=>{const box=document.getElementById("familyNotes");if(snap.exists()&&(!notesLoaded||document.activeElement!==box))box.value=snap.data().text||"";notesLoaded=true},e=>{console.error(e);document.getElementById("noteStatus").textContent="Notes could not be loaded."});
-document.getElementById("saveNotes").onclick=async()=>{const button=document.getElementById("saveNotes"),status=document.getElementById("noteStatus");button.disabled=true;status.textContent="Saving...";try{await setDoc(notesRef,{text:document.getElementById("familyNotes").value,updatedAt:new Date().toISOString()},{merge:true});status.textContent="Saved ✓"}catch(e){console.error(e);status.textContent="Could not save the notes."}finally{button.disabled=false}};
-try{await createMissingItems()}catch(e){console.error(e);document.getElementById("progress").innerHTML='<span class="error">The list could not be set up. Please check Firebase.</span>'}
+
+async function createMissingItems(){
+ for(const category in categories){
+  for(const [itemName,qty] of categories[category]){
+   const id=makeItemId(category,itemName);
+   const ref=doc(db,"items",id);
+   const snap=await getDoc(ref);
+   if(!snap.exists())await setDoc(ref,{itemName,qty,category,claimed:false,claimedBy:""});
+  }
+ }
+}
+
+function renderList(saved){
+ latestSaved=saved;
+ const knownIds=new Set();
+ for(const category in categories)for(const [itemName] of categories[category])knownIds.add(makeItemId(category,itemName));
+ const claimed=saved.filter(x=>knownIds.has(x.id)&&x.claimed).length;
+ const total=totalItems();
+ document.getElementById("progress").textContent=`${claimed} of ${total} items claimed`;
+ document.getElementById("progressFill").style.width=`${total?claimed/total*100:0}%`;
+ let html="";
+ let visibleCount=0;
+
+ for(const category in categories){
+  let itemHtml="";
+  for(const [itemName,qty,link] of categories[category]){
+   const id=makeItemId(category,itemName);
+   const record=saved.find(x=>x.id===id);
+   const isClaimed=Boolean(record?.claimed);
+   const claimedBy=record?.claimedBy||record?.name||"";
+   const haystack=(category+" "+itemName+" "+qty).toLowerCase();
+   const matchesSearch=haystack.includes(currentSearch);
+   const matchesFilter=currentFilter==="all"||(currentFilter==="claimed"&&isClaimed)||(currentFilter==="available"&&!isClaimed);
+   if(!matchesSearch||!matchesFilter)continue;
+   visibleCount++;
+   itemHtml+=`<div class="item ${isClaimed?"claimed":""}"><div class="name">${itemName}</div><div class="qty">Need: ${qty}</div>`;
+   if(link){itemHtml+=`<a class="product-link" href="${link}" target="_blank" rel="noopener noreferrer">🔗 View product and current price</a>`}
+   else if(!category.startsWith("👗")){itemHtml+=`<div class="no-link">Please contact Jordan or Chloe for the exact item and price before claiming.</div>`}
+   if(isClaimed){itemHtml+=`<div class="claimed-name">✅ Claimed by ${claimedBy}</div><div class="button-row"><button class="unclaim-btn" data-id="${id}">Unclaim Item</button></div>`}
+   else{itemHtml+=`<div class="button-row"><button class="claim-btn" data-id="${id}">Claim This Item</button></div>`}
+   itemHtml+="</div>";
+  }
+  if(itemHtml)html+=`<details class="section" open><summary>${category}</summary>${itemHtml}</details>`;
+ }
+
+ document.getElementById("content").innerHTML=html||'<div class="empty">No matching items found.</div>';
+ document.querySelectorAll(".claim-btn").forEach(b=>b.onclick=()=>claimItem(b.dataset.id));
+ document.querySelectorAll(".unclaim-btn").forEach(b=>b.onclick=()=>unclaimItem(b.dataset.id));
+}
+
+async function claimItem(id){
+ const buyer=prompt("What is your name?");
+ if(!buyer?.trim())return;
+ const ref=doc(db,"items",id);
+ try{
+  await runTransaction(db,async tx=>{
+   const snap=await tx.get(ref);
+   if(!snap.exists())throw new Error("This item could not be found.");
+   if(snap.data().claimed)throw new Error("Sorry, somebody else has already claimed this item.");
+   tx.update(ref,{claimed:true,claimedBy:buyer.trim()});
+  });
+ }catch(e){alert(e.message)}
+}
+
+async function unclaimItem(id){
+ if(!confirm("Make this item available again?"))return;
+ const ref=doc(db,"items",id);
+ try{
+  await runTransaction(db,async tx=>{
+   const snap=await tx.get(ref);
+   if(!snap.exists())throw new Error("This item could not be found.");
+   tx.update(ref,{claimed:false,claimedBy:""});
+  });
+ }catch(e){alert(e.message)}
+}
+
+document.getElementById("searchBox").addEventListener("input",e=>{
+ currentSearch=e.target.value.trim().toLowerCase();
+ renderList(latestSaved);
+});
+
+document.querySelectorAll(".filter-btn").forEach(button=>{
+ button.addEventListener("click",()=>{
+  currentFilter=button.dataset.filter;
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  renderList(latestSaved);
+ });
+});
+
+onSnapshot(collection(db,"items"),snap=>{
+ const saved=[];
+ snap.forEach(s=>saved.push({id:s.id,...s.data()}));
+ renderList(saved);
+},e=>{
+ console.error(e);
+ document.getElementById("progress").innerHTML='<span class="error">The list could not be loaded. Please check Firebase.</span>';
+});
+
+const notesRef=doc(db,"shared","familyNotes");
+let notesLoaded=false;
+onSnapshot(notesRef,snap=>{
+ const box=document.getElementById("familyNotes");
+ if(snap.exists()&&(!notesLoaded||document.activeElement!==box))box.value=snap.data().text||"";
+ notesLoaded=true;
+},e=>{
+ console.error(e);
+ document.getElementById("noteStatus").textContent="Notes could not be loaded.";
+});
+
+document.getElementById("saveNotes").onclick=async()=>{
+ const button=document.getElementById("saveNotes");
+ const status=document.getElementById("noteStatus");
+ button.disabled=true;
+ status.textContent="Saving...";
+ try{
+  await setDoc(notesRef,{text:document.getElementById("familyNotes").value,updatedAt:new Date().toISOString()},{merge:true});
+  status.textContent="Saved ✓";
+ }catch(e){
+  console.error(e);
+  status.textContent="Could not save the notes.";
+ }finally{button.disabled=false}
+};
+
+try{await createMissingItems()}
+catch(e){
+ console.error(e);
+ document.getElementById("progress").innerHTML='<span class="error">The list could not be set up. Please check Firebase.</span>';
+}
 </script>
 </body>
 </html>
